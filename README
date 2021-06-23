@@ -22,7 +22,6 @@ How to run the program:
    --method : using which replace algorithm(lirs2, lru, opt, lirs, arc)
    --batch : select false if there is a specific trace you want to run
    --trace_list : file that defines the trace list (--batch set to true)
-   --pool : thread pool size
 ========================================================================================
    Follow the instructions below to run the program:
    mkdir build

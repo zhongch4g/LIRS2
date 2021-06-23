@@ -44,7 +44,7 @@ void Replace::Report () {
     printf ("========== %s %s ==========\n", mName.c_str (), mTraceHandle->mFileName.c_str ());
     printf ("cache_mem = %u\n", mCacheMaxLimit);
     printf ("total_ref_pg = %5u    mem_size = %u\n", mTraceHandle->mTraceLength, mCacheMaxLimit);
-    printf ("num_pg_flt   = %5u    pf ratio = %2.1f% \n", mPageFaultNum, missRatio1);
+    printf ("num_pg_flt   = %5u    pf ratio = %2.1f%% \n", mPageFaultNum, missRatio1);
     fflush (NULL);
 }
 

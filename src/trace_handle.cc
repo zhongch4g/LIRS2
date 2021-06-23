@@ -80,16 +80,16 @@ bool TraceHandle::Init (std::string filename, int32_t cutline) {
         fprintf (stderr, "Trace size not equal.\n");
         return false;
     }
-    printf ("TraceHandle len %llu, size: %llu MB \n", mTrace.size (),
+    printf ("TraceHandle len %lu, size: %lu MB \n", mTrace.size (),
             (mTrace.size () * 4) / 1024 / 1024);
     return true;
 }
 
 void TraceHandle::ReadOne (uint32_t* ref_blk) {
     if (mIsBinary) {
-        fread (ref_blk, 4, 1, mTraceFp);
+        size_t flag = fread (ref_blk, 4, 1, mTraceFp);
     } else {
-        fscanf (mTraceFp, "%d", ref_blk);
+        int flag = fscanf (mTraceFp, "%d", ref_blk);
     }
 }
 

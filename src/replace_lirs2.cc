@@ -56,7 +56,7 @@ LIRS2_Replace::LIRS2_Replace (TraceHandle* th, uint32_t mem_size) {
     EVICT_LIST_SIZE = 10;
     LOWEST_HG_NUM = 4;
     HIR_RATE = 1;
-    MAX_S_LEN = (mem_size * 8);
+    MAX_S_LEN = mem_size * 8;
 
     PRE_REFER_FLAG = 0;
     hir_instack_miss = 0;
@@ -192,8 +192,8 @@ bool LIRS2_Replace::removeLIRSList (page_struct* page_ptr) {
 
 // Add node to stack S
 void LIRS2_Replace::addLruListHead (page_struct* new_ref_ptr) {
-    // assert(new_ref_ptr);
-    // assert(!new_ref_ptr->LIRS_prev && !new_ref_ptr->LIRS_next);
+    assert (new_ref_ptr);
+    assert (!new_ref_ptr->LIRS_prev && !new_ref_ptr->LIRS_next);
 
     // If stack S is empty -> initial
     if (!LRU_list_head)
@@ -209,7 +209,7 @@ void LIRS2_Replace::addLruListHead (page_struct* new_ref_ptr) {
 
 /* put a HIR resident block on the end of HIR resident list */
 void LIRS2_Replace::addHirlistHead (page_struct* new_rsd_HIR_ptr) {
-    // assert(new_rsd_HIR_ptr);
+    assert (new_rsd_HIR_ptr);
 
     if (!HIR_list_head)
         HIR_list_tail = HIR_list_head = new_rsd_HIR_ptr;
@@ -228,8 +228,6 @@ void LIRS2_Replace::addHirlistHead (page_struct* new_rsd_HIR_ptr) {
  */
 page_struct* LIRS2_Replace::pruneLIRSstack () {
     page_struct* tmp_ptr;
-    int i = 0;
-    // printf ("cur len : %lu, max : %lu \n", cur_lir_S_len, MAX_S_LEN);
     while (cur_lir_S_len > MAX_S_LEN) {
         tmp_ptr = Rmax2;
         while (!mPageTable[tmp_ptr->page_num].isHIR_block) tmp_ptr = tmp_ptr->LIRS_prev;
