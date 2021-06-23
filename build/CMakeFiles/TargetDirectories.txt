@@ -1,0 +1,6 @@
+/home/zhongchen/LIRS2/build/CMakeFiles/rebuild_cache.dir
+/home/zhongchen/LIRS2/build/CMakeFiles/edit_cache.dir
+/home/zhongchen/LIRS2/build/src/CMakeFiles/edit_cache.dir
+/home/zhongchen/LIRS2/build/src/CMakeFiles/llirs.dir
+/home/zhongchen/LIRS2/build/src/CMakeFiles/rebuild_cache.dir
+/home/zhongchen/LIRS2/build/src/CMakeFiles/replace.dir

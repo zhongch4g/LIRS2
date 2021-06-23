@@ -1,0 +1,2 @@
+/usr/bin/ar qc libllirs.a  CMakeFiles/llirs.dir/replace_lirs_base.cc.o CMakeFiles/llirs.dir/replace_lirs2.cc.o CMakeFiles/llirs.dir/replace_arc.cc.o CMakeFiles/llirs.dir/replace_lru.cc.o CMakeFiles/llirs.dir/replace_opt.cc.o CMakeFiles/llirs.dir/replace.cc.o CMakeFiles/llirs.dir/trace_handle.cc.o
+/usr/bin/ranlib libllirs.a

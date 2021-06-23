@@ -36,15 +36,15 @@ void Replace::Report () {
 
     double missRatio1 = (double)mPageFaultNum / mTraceHandle->mTraceLength * 100.0;
 
-    fprintf (write_ptr1, "%lu,%2.1f,%2.1f\n", mCacheMaxLimit, missRatio1, 100 - missRatio1);
+    fprintf (write_ptr1, "%u,%2.1f,%2.1f\n", mCacheMaxLimit, missRatio1, 100 - missRatio1);
 
     fflush (write_ptr1);
     fclose (write_ptr1);
 
     printf ("========== %s %s ==========\n", mName.c_str (), mTraceHandle->mFileName.c_str ());
-    printf ("cache_mem = %llu\n", mCacheMaxLimit);
-    printf ("total_ref_pg = %lu    mem_size: %10lu\n", mTraceHandle->mTraceLength, mCacheMaxLimit);
-    printf ("num_pg_flt   = %lu    pf ratio = %2.1f\%\n", mPageFaultNum, missRatio1);
+    printf ("cache_mem = %u\n", mCacheMaxLimit);
+    printf ("total_ref_pg = %5u    mem_size = %u\n", mTraceHandle->mTraceLength, mCacheMaxLimit);
+    printf ("num_pg_flt   = %5u    pf ratio = %2.1f% \n", mPageFaultNum, missRatio1);
     fflush (NULL);
 }
 
