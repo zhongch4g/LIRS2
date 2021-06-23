@@ -1,16 +1,9 @@
-# We'll use defaults from the google style, but with 4 columns indentation.
+# Use the Google style in this project.
+BasedOnStyle: Google
 BasedOnStyle: google
 IndentWidth: 4
 TabWidth: 4
 ColumnLimit: 100
 UseTab: false
-# --- C++ style ---
-Language: Cpp
-# Force pointers to the type for C++.
-DerivePointerAlignment: false
-PointerAlignment: Left
-AllowShortFunctionsOnASingleLine: true
-AllowAllParametersOfDeclarationOnNextLine: true
-IncludeBlocks: Regroup
-AccessModifierOffset: -4
 SpaceBeforeParens: Always
+AccessModifierOffset: -4

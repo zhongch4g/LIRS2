@@ -1,18 +1,17 @@
 #ifndef __REPALCE_H__
 #define __REPALCE_H__
 
-#include <string>
 #include <sys/stat.h>
 #include <sys/types.h>
+
+#include <string>
 
 namespace replace {
 
 class TraceHandle;
 
-class Replace
-{
+class Replace {
 public:
-    
     TraceHandle *mTraceHandle;
     uint32_t mCacheMaxLimit;
     uint32_t mPageFaultNum;
@@ -21,11 +20,9 @@ public:
     uint32_t ColdMiss;
     std::string mName;
 
-virtual void Report();
-
+    virtual void Report ();
 };
 
-
-}
+}  // namespace replace
 
 #endif

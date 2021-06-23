@@ -2,9 +2,8 @@
 #define __TRACE_HANDLE_H__
 
 #include <string>
+#include <unordered_map>
 #include <vector>
-
-#include "sparsepp/spp.h"
 namespace replace {
 
 class TraceHandle {
@@ -29,7 +28,7 @@ public:
     uint32_t mTraceLength;
     uint32_t* mNextPos;
     std::vector<uint32_t> mTrace;
-    spp::sparse_hash_map<uint32_t, uint32_t> mRealTrace;
+    std::unordered_map<uint32_t, uint32_t> mRealTrace;
 };
 
 }  // namespace replace

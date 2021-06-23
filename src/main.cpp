@@ -13,7 +13,6 @@
 #include "replace_lirs_base.h"
 #include "replace_lru.h"
 #include "replace_opt.h"
-#include "sparsepp/spp.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"

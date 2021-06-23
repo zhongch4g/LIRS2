@@ -1,8 +1,8 @@
 
 #include "trace_handle.h"
 
-#include "sparsepp/spp.h"
-
+#include <cstring>
+#include <unordered_map>
 namespace replace {
 
 TraceHandle::TraceHandle (bool isBinary) {
@@ -33,11 +33,11 @@ bool TraceHandle::Init (std::string filename, int32_t cutline) {
     uint32_t ref_blk = 0;
     uint32_t max = 0, min = WINT_MAX;
     // key -> pos
-    spp::sparse_hash_map<uint32_t, uint32_t> prevPos, nextPos;
-    prevPos.resize (mFileSize / 4);
-    nextPos.resize (mFileSize / 4);
+    std::unordered_map<uint32_t, uint32_t> prevPos, nextPos;
+    prevPos.reserve (mFileSize / 4);
+    nextPos.reserve (mFileSize / 4);
 
-    spp::sparse_hash_map<uint32_t, uint32_t> dic;
+    std::unordered_map<uint32_t, uint32_t> dic;
     uint32_t page_num = 0;
     uint32_t max_page_number = 0;
     int32_t cut = 0;

@@ -1,4 +1,5 @@
-Descriptions:
+# Descriptions:
+
    ./traces/{w2_pools, wcs, wcpp, wgli, wps, wsprite, wmulti1, wmulti2, wmulti3} are the trace files from LIRS. (String format)
 
    ./traces/{w001, w002, ..., w106} : 106 week-long virtual disk traces collected by CloudPhysics’s caching analytics service in production VMware environments. (Binary format)
@@ -11,8 +12,11 @@ Descriptions:
 
    The trace just an array of unsigned int values -- LBN (logical block number)
 
+# Install boost
 
-How to run the program:
+sudo apt install libboost-all-dev
+
+# How to run the program:
 ========================================================================================
    The args of program:
    --trace : which trace you want to run

@@ -319,8 +319,8 @@ void LIRS2_Replace::Run () {
             mPageFaultNum++;
             /* Not enough memory */
             if (mFreeMemSize == 0) {
-                mPageTable[HIR_list_tail->page_num].isResident = false;
                 assert (HIR_list_tail);
+                mPageTable[HIR_list_tail->page_num].isResident = false;
                 removeHIRList (HIR_list_tail);
                 mFreeMemSize++;
             } else if (mFreeMemSize > HIR_block_portion_limit) {
