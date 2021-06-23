@@ -1,6 +1,5 @@
 #include "replace_lru.h"
 
-#include <ctime>
 namespace replace {
 
 LRU_Replace::LRU_Replace (TraceHandle* th, uint32_t mem_size) {
@@ -46,8 +45,6 @@ void LRU_Replace::Run () {
     for (uint32_t i = 0; i < mTraceHandle->mTraceLength; i += step) printf (".");
     printf ("\n");
 
-    time_t c_start, c_end;
-    c_start = clock ();
     uint32_t ref_page = 0;
     for (uint32_t cur_ref = 0; cur_ref < mTraceHandle->mTraceLength; cur_ref++) {
         if (cur_ref % step == 0) {

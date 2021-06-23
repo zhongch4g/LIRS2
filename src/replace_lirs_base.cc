@@ -1,6 +1,5 @@
 #include "replace_lirs_base.h"
 
-#include <ctime>
 #include <iostream>
 #include <sstream>
 
@@ -66,24 +65,25 @@ LIRS_Replace::LIRS_Replace (TraceHandle* th, uint32_t mem_size) {
 void LIRS_Replace::recordEvict (uint32_t page_num) { evict_list.push_back (page_num); }
 
 bool LIRS_Replace::removeHIRList (page_struct* HIR_block_ptr) {
-    // If prev and next pointers are not exist -> Del current node, now Stack Q is empty
+    // If prev and next pointers are not exist -> Del current node, now Stack Q is
+    // empty
     if (HIR_block_ptr->HIR_rsd_next == NULL && HIR_block_ptr->HIR_rsd_prev == NULL) {
         assert (HIR_list_head == HIR_block_ptr && HIR_list_tail == HIR_block_ptr);
         HIR_list_head = HIR_list_tail = NULL;
     } else if (HIR_block_ptr->HIR_rsd_prev &&
-               HIR_block_ptr
-                   ->HIR_rsd_next) {  // If prev and next pointers are exist -> Del current node
+               HIR_block_ptr->HIR_rsd_next) {  // If prev and next pointers are
+                                               // exist -> Del current node
         HIR_block_ptr->HIR_rsd_prev->HIR_rsd_next = HIR_block_ptr->HIR_rsd_next;
         HIR_block_ptr->HIR_rsd_next->HIR_rsd_prev = HIR_block_ptr->HIR_rsd_prev;
         HIR_block_ptr->HIR_rsd_prev = HIR_block_ptr->HIR_rsd_next = NULL;
-    } else if (!HIR_block_ptr
-                    ->HIR_rsd_prev) {  // If prev pointer is not exists -> the head of stack Q
+    } else if (!HIR_block_ptr->HIR_rsd_prev) {  // If prev pointer is not exists ->
+                                                // the head of stack Q
         assert (HIR_block_ptr == HIR_list_head);
         HIR_list_head = HIR_block_ptr->HIR_rsd_next;
         HIR_list_head->HIR_rsd_prev->HIR_rsd_next = NULL;
         HIR_list_head->HIR_rsd_prev = NULL;
-    } else if (!HIR_block_ptr
-                    ->HIR_rsd_next) {  // If next pointer is not exists -> the tail of stack Q
+    } else if (!HIR_block_ptr->HIR_rsd_next) {  // If next pointer is not exists ->
+                                                // the tail of stack Q
         assert (HIR_block_ptr == HIR_list_tail);
         HIR_list_tail = HIR_block_ptr->HIR_rsd_prev;
         HIR_list_tail->HIR_rsd_next->HIR_rsd_prev = NULL;
@@ -205,8 +205,6 @@ void LIRS_Replace::Run () {
     for (uint32_t i = 0; i < mTraceHandle->mTraceLength; i += step) printf (".");
     printf ("\n");
 
-    time_t c_start, c_end;
-    c_start = clock ();
     uint32_t ref_page;
     for (uint32_t cur_ref = 0; cur_ref < mTraceHandle->mTraceLength; cur_ref++) {
         if (cur_ref % step == 0) {

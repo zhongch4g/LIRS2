@@ -2,7 +2,6 @@
 
 #include <gflags/gflags.h>
 
-#include <ctime>
 #include <iostream>
 #include <sstream>
 
@@ -95,24 +94,25 @@ void LIRS2_Replace::recordEvict (uint32_t page_num) { evict_list.push_back (page
 bool LIRS2_Replace::removeHIRList (page_struct* HIR_block_ptr) {
     assert (HIR_block_ptr);
 
-    // If prev and next pointers are not exist -> Del current node, now Stack Q is empty
+    // If prev and next pointers are not exist -> Del current node, now Stack Q is
+    // empty
     if (HIR_block_ptr->HIR_rsd_next == NULL && HIR_block_ptr->HIR_rsd_prev == NULL) {
         assert (HIR_list_head == HIR_block_ptr && HIR_list_tail == HIR_block_ptr);
         HIR_list_head = HIR_list_tail = NULL;
     } else if (HIR_block_ptr->HIR_rsd_prev &&
-               HIR_block_ptr
-                   ->HIR_rsd_next) {  // If prev and next pointers are exist -> Del current node
+               HIR_block_ptr->HIR_rsd_next) {  // If prev and next pointers are
+                                               // exist -> Del current node
         HIR_block_ptr->HIR_rsd_prev->HIR_rsd_next = HIR_block_ptr->HIR_rsd_next;
         HIR_block_ptr->HIR_rsd_next->HIR_rsd_prev = HIR_block_ptr->HIR_rsd_prev;
         HIR_block_ptr->HIR_rsd_prev = HIR_block_ptr->HIR_rsd_next = NULL;
-    } else if (!HIR_block_ptr
-                    ->HIR_rsd_prev) {  // If prev pointer is not exists -> the head of stack Q
+    } else if (!HIR_block_ptr->HIR_rsd_prev) {  // If prev pointer is not exists ->
+                                                // the head of stack Q
         assert (HIR_block_ptr == HIR_list_head);
         HIR_list_head = HIR_block_ptr->HIR_rsd_next;
         HIR_list_head->HIR_rsd_prev->HIR_rsd_next = NULL;
         HIR_list_head->HIR_rsd_prev = NULL;
-    } else if (!HIR_block_ptr
-                    ->HIR_rsd_next) {  // If next pointer is not exists -> the tail of stack Q
+    } else if (!HIR_block_ptr->HIR_rsd_next) {  // If next pointer is not exists ->
+                                                // the tail of stack Q
         assert (HIR_block_ptr == HIR_list_tail);
         HIR_list_tail = HIR_block_ptr->HIR_rsd_prev;
         HIR_list_tail->HIR_rsd_next->HIR_rsd_prev = NULL;
@@ -172,11 +172,13 @@ bool LIRS2_Replace::removeLIRSList (page_struct* page_ptr) {
         page_ptr->LIRS_prev->LIRS_next = page_ptr->LIRS_next;
         page_ptr->LIRS_next->LIRS_prev = page_ptr->LIRS_prev;
         page_ptr->LIRS_prev = page_ptr->LIRS_next = NULL;
-    } else if (!page_ptr->LIRS_prev) {  // If prev pointer is not exists -> the head of stack S
+    } else if (!page_ptr->LIRS_prev) {  // If prev pointer is not exists -> the
+                                        // head of stack S
         LRU_list_head = page_ptr->LIRS_next;
         LRU_list_head->LIRS_prev->LIRS_next = NULL;
         LRU_list_head->LIRS_prev = NULL;
-    } else if (!page_ptr->LIRS_next) {  // If next pointer is not exists -> the tail of stack S
+    } else if (!page_ptr->LIRS_next) {  // If next pointer is not exists -> the
+                                        // tail of stack S
         LRU_list_tail = page_ptr->LIRS_prev;
         LRU_list_tail->LIRS_next->LIRS_prev = NULL;
         LRU_list_tail->LIRS_next = NULL;
@@ -305,8 +307,6 @@ void LIRS2_Replace::Run () {
     for (uint32_t i = 0; i < mTraceHandle->mTraceLength; i += step) printf (".");
     printf ("\n");
 
-    time_t c_start, c_end;
-    c_start = clock ();
     for (uint32_t cur_ref = 0; cur_ref < mTraceHandle->mTraceLength; cur_ref++) {
         if (cur_ref % step == 0) {
             printf (".");
@@ -335,8 +335,8 @@ void LIRS2_Replace::Run () {
                 num_LIR_pgs++;
             }
             mFreeMemSize--;
-        } else if (mPageTable[ref_page]
-                       .isHIR_block) { /* Resident in cache and it is a HIR block. */
+        } else if (mPageTable[ref_page].isHIR_block) { /* Resident in cache and it
+                                                          is a HIR block. */
             /* RESIDENT HIR -> HIT, recency2, promote */
             removeHIRList (findInstanceInQ (ref_page));
         }
@@ -402,8 +402,8 @@ void LIRS2_Replace::Run () {
 
         removeLIRSList (ins2);
         addLruListHead (ins2);
-        // move this Rmax1 adjustment operation down here to handle the case where Rmax1 is at the
-        // stack top
+        // move this Rmax1 adjustment operation down here to handle the case where
+        // Rmax1 is at the stack top
         if (ins1 == Rmax1) {
             findLastLirLru (1);
         } else {
@@ -415,8 +415,8 @@ void LIRS2_Replace::Run () {
         cur_ins1_rmax1_len++;
         cur_lir_S_len++;
 
-        // fake instance2 indicates a block that has been accessed only once, but has two instances
-        // in the stack
+        // fake instance2 indicates a block that has been accessed only once, but
+        // has two instances in the stack
         if (mPageTable[ins2->page_num].isHIR_block && ins2_recency2 == S_STACK_IN &&
             !ins2_fake_ins) {
             mPageTable[ins2->page_num].isHIR_block = false;
