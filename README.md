@@ -17,7 +17,7 @@
 sudo apt install libboost-all-dev
 
 # How to run the program:
-========================================================================================
+
    The args of program:
    --trace : which trace you want to run
    --trace_folder : folder store trace parameter
@@ -26,7 +26,8 @@ sudo apt install libboost-all-dev
    --method : using which replace algorithm(lirs2, lru, opt, lirs, arc)
    --batch : select false if there is a specific trace you want to run
    --trace_list : file that defines the trace list (--batch set to true)
-========================================================================================
+
+
    Follow the instructions below to run the program:
    mkdir build
    cd build
