@@ -7,7 +7,12 @@ Descriptions:
 
    ./traces/{wFinancial1, wFinancial2, websearch1, websearch2, websearch3} : 5 I/O traces from the UMass Trace Repository. (String format)
 
-   ./traces/{w110, w111} : The traces created by ourself, representing SCAN and Zigzag pattern respectively.
+   ./traces/{w110, w111} : SCAN and Zigzag pattern respectively.
+
+   The trace just an array of unsigned int values -- LBN (logical block number)
+
+   Download the full traces via https://gitlab.com/sjiang-lab/trace
+
 How to run the program:
 ========================================================================================
    The args of program:
@@ -20,6 +25,7 @@ How to run the program:
    --trace_list : file that defines the trace list (--batch set to true)
    --pool : thread pool size
 ========================================================================================
+   Follow the instructions below to run the program:
    mkdir build
    cd build
    cmake ..
