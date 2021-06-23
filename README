@@ -11,7 +11,6 @@ Descriptions:
 
    The trace just an array of unsigned int values -- LBN (logical block number)
 
-   Download the full traces via https://gitlab.com/sjiang-lab/trace
 
 How to run the program:
 ========================================================================================
