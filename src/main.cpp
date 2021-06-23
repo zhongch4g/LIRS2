@@ -25,12 +25,12 @@ using GFLAGS_NAMESPACE::SetUsageMessage;
 
 #include <mutex>
 // manualy set trace_folder/trace
-DEFINE_string (trace, "", "which trace you want to run");
+DEFINE_string (trace, "w111", "which trace you want to run");
 DEFINE_string (trace_folder, "../traces/", "where the trace store");
 DEFINE_string (parameter_folder, "../trace_parameter/", "folder store trace parameter");
 DEFINE_bool (readbinary, false, "read file in binary mode");
 DEFINE_int64 (mem_size, 0, "mem size, run batch if mem_size = 0");
-DEFINE_string (method, "all", "using which replace algorithm(lru, opt, lirs, arc)");
+DEFINE_string (method, "lirs2", "using which replace algorithm(lru, opt, lirs, arc)");
 DEFINE_bool (batch, false, "select false if there is a specific trace you want to run");
 DEFINE_string (trace_list, "", "path of the trace list. For example ./list.txt");
 DEFINE_int32 (pool, 1, "thread pool size");
