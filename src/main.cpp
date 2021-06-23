@@ -17,6 +17,8 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
+#include "threadpool.hpp"
+using namespace boost::threadpool;
 
 using GFLAGS_NAMESPACE::ParseCommandLineFlags;
 using GFLAGS_NAMESPACE::RegisterFlagValidator;
@@ -98,6 +100,9 @@ int main (int argc, char* argv[]) {
     FILE *trace_fp, *cuv_fp, *para_fp;
     ParseCommandLineFlags (&argc, &argv, true);
 
+    pool tp;
+    tp.size_controller ().resize (FLAGS_pool);
+
     int opt;
     uint64_t single_mem = 0;
     char trc_file_name[100];
@@ -173,12 +178,14 @@ int main (int argc, char* argv[]) {
             for (auto ms : mem_size) {
                 if (FLAGS_method == "all") {
                     for (auto method : kMethods) {
-                        ReplaceJob job (method, traceHandle, ms);
-                        job.Run ();
+                        boost::shared_ptr<ReplaceJob> job (
+                            new ReplaceJob (method, traceHandle, ms));
+                        schedule (tp, boost::bind (&ReplaceJob::Run, job));
                     }
                 } else {
-                    ReplaceJob job (FLAGS_method, traceHandle, FLAGS_mem_size);
-                    job.Run ();
+                    boost::shared_ptr<ReplaceJob> job (
+                        new ReplaceJob (FLAGS_method, traceHandle, ms));
+                    schedule (tp, boost::bind (&ReplaceJob::Run, job));
                 }
             }
         }
