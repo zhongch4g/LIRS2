@@ -29,7 +29,7 @@ LIRS2_Replace::LIRS2_Replace (TraceHandle* th, uint32_t mem_size) {
         mPageTable1[i].LIRS_prev = NULL;
         mPageTable1[i].HIR_rsd_next = NULL;
         mPageTable1[i].HIR_rsd_prev = NULL;
-        // mPageTable1[i].fake_ins = true;
+        mPageTable1[i].fake_ins = true;
         mPageTable1[i].which_instance = 0;
         // Used to mark comparison of recency and Smaxf
         mPageTable1[i].recency1 = S_STACK_OUT;
@@ -40,7 +40,7 @@ LIRS2_Replace::LIRS2_Replace (TraceHandle* th, uint32_t mem_size) {
         mPageTable2[i].LIRS_prev = NULL;
         mPageTable2[i].HIR_rsd_next = NULL;
         mPageTable2[i].HIR_rsd_prev = NULL;
-        // mPageTable2[i].fake_ins = true;
+        mPageTable2[i].fake_ins = true;
         mPageTable2[i].which_instance = 0;
         // Used to mark comparison of recency and Smax
         mPageTable2[i].recency1 = S_STACK_OUT;
@@ -59,8 +59,6 @@ LIRS2_Replace::LIRS2_Replace (TraceHandle* th, uint32_t mem_size) {
     MAX_S_LEN = mem_size * 8;
 
     PRE_REFER_FLAG = 0;
-    hir_instack_miss = 0;
-    demote = 0;
 
     cur_ins1_rmax1_len = 0;
     cur_ins2_rmax2_len = 0;
@@ -141,7 +139,6 @@ page_struct* LIRS2_Replace::findLastLirLru (uint32_t which_instance) {
         }
         printf ("Can't find the rmax1... \n");
         exit (1);
-        return NULL;
     }
 
     if (which_instance == 2) {
@@ -157,8 +154,8 @@ page_struct* LIRS2_Replace::findLastLirLru (uint32_t which_instance) {
         }
         printf ("Can't find the rmax2... \n");
         exit (1);
-        return NULL;
     }
+    return NULL;
 }
 
 /* remove the node from stack S */
@@ -237,6 +234,7 @@ page_struct* LIRS2_Replace::pruneLIRSstack () {
         insertLRUList (tmp_ptr, Rmax2);
         cur_lir_S_len--;
     }
+    return NULL;
 }
 
 /* insert a block into LIRS list */
@@ -298,9 +296,6 @@ void LIRS2_Replace::Run () {
     page_struct* ins2 = NULL;
     uint32_t ref_page;
     uint32_t step = mTraceHandle->mTraceLength / 20;
-    uint32_t last_seg_miss = 0;
-    out_stack_miss = 0;
-    in_stack_miss = 0;
 
     for (uint32_t i = 0; i < mTraceHandle->mTraceLength; i += step) printf (".");
     printf ("\n");

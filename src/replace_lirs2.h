@@ -45,9 +45,6 @@ private:
 
     uint32_t HIR_block_portion_limit, HIR_block_activate_limit;
 
-    uint32_t evict_cur_idx, evict_max_idx;
-    std::vector<uint32_t> evict_list;
-
     /* current lir stack length */
     uint32_t cur_ins1_rmax1_len;
     uint32_t cur_ins2_rmax2_len;
@@ -62,25 +59,6 @@ private:
     /* if you want to limit the maximum LIRS stack size (e.g. 3 times of LRU stack  *  size,
      * you can change the "2000" to "3"*/
     uint32_t MAX_S_LEN;
-
-    uint32_t GUESS_THRESHOLD;
-    uint32_t PRE_REFER_FLAG;
-    uint32_t hir_instack_miss;
-    uint32_t demote;
-
-    /* Guess */
-    FILE* instack_miss;
-    FILE* guess;
-    uint64_t in_stack_miss;
-    uint64_t out_stack_miss;
-    uint64_t initial_miss;
-    uint64_t all_visited_hir;
-    uint64_t block_total_guess;
-    uint64_t block_number_guess;
-    uint64_t N_previous_total_guess;
-    uint64_t N_previous_guess;
-    uint64_t last_red_total_guess;
-    uint64_t last_red_guess;
 
     std::string filename;
 
