@@ -10,13 +10,16 @@ void Replace::Report () {
     char path1[128];
     char path2[128];
     char shortn[9];
-    /* the trace with prefix "w" */
-    auto n = mTraceHandle->mFileName.find ("w");
-    std::string filename;
-    if (n == std::string::npos) {
-        filename = "origin_trace";
-    } else {
-        filename = mTraceHandle->mFileName.substr (n);
+
+    std::string filename = mTraceHandle->mFileName;
+    std::string filePath = mTraceHandle->mFileName;
+    std::string delimiter = "/";
+
+    size_t pos = 0;
+    std::string token;
+    while ((pos = filename.find (delimiter)) != std::string::npos) {
+        token = filename.substr (0, pos);
+        filename.erase (0, pos + delimiter.length ());
     }
     printf ("filename = %s \n", filename.c_str ());
 

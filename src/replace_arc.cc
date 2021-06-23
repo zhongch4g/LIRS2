@@ -545,14 +545,11 @@ void ARC_Replace::Run () {
 
     uint32_t ref_page = 0;
     for (uint32_t cur_ref = 0; cur_ref < mTraceHandle->mTraceLength; cur_ref++) {
-        // if (cur_ref % step == 0)
-        // {
-        //     printf(".");
-        //     fflush(NULL);
-        // }
+        if (cur_ref % step == 0) {
+            printf (".");
+            fflush (NULL);
+        }
         ref_page = mTraceHandle->mTrace[cur_ref];
-        // if (total_ref_pg % 10000 == 0)
-        //     fprintf(stderr, "%llu samples processed\r", total_ref_pg);
 
         if (total_ref_pg > STAT_START_POINT) {
             collect_stat = 1;
@@ -564,10 +561,10 @@ void ARC_Replace::Run () {
             exit (0);
         }
 
-        // if (ref_page == last_ref_pg)
-        //     continue;
-        // else
-        //     last_ref_pg = ref_page;
+        if (ref_page == last_ref_pg)
+            continue;
+        else
+            last_ref_pg = ref_page;
 
         no_dup_refs++; /* ref counter excluding duplicate refs */
 

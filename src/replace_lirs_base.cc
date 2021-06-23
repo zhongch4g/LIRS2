@@ -197,9 +197,6 @@ void LIRS_Replace::Run () {
     uint32_t out_stack_miss = 0;
     uint32_t initial_miss = 0;
     uint32_t last_seg_miss = 0;
-    std::string filename;
-    auto n = mTraceHandle->mFileName.find ("w");
-    filename = mTraceHandle->mFileName.substr (n);
 
     uint32_t step = mTraceHandle->mTraceLength / 20;
     for (uint32_t i = 0; i < mTraceHandle->mTraceLength; i += step) printf (".");

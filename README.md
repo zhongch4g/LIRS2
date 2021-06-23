@@ -1,14 +1,14 @@
 # Descriptions:
 
--   ./traces/{w2_pools, wcs, wcpp, wgli, wps, wsprite, wmulti1, wmulti2, wmulti3} are the trace files from LIRS. (`String format`)
+-   ./traces/{2_pools, cs, cpp, gli, ps, sprite, multi1, multi2, multi3} are the trace files from LIRS. (`String format`)
 
 -  ./traces/{w001, w002, ..., w106} : 106 week-long virtual disk traces collected by CloudPhysics’s caching analytics service in production VMware environments. (`Binary format`)
 
--  ./traces/{wmsr_proj, wmsr_src1, wmsr_src2, wmsr_web1} : 4 week-long enterprise server traces collected by Microsoft Research Cambridge. (`Binary format`)
+-  ./traces/{msr_proj, msr_src1, msr_src2, msr_web1} : 4 week-long enterprise server traces collected by Microsoft Research Cambridge. (`Binary format`)
 
--  ./traces/{wFinancial1, wFinancial2, websearch1, websearch2, websearch3} : 5 I/O traces from the UMass Trace Repository. (`String format`)
+-  ./traces/{Financial1, Financial2, websearch1, websearch2, websearch3} : 5 I/O traces from the UMass Trace Repository. (`String format`)
 
--  ./traces/{w110, w111} : SCAN and Zigzag pattern respectively.
+-  ./traces/{SCAN, Zigzag} : SCAN and Zigzag pattern respectively.
 
 
    The binary-format trace is an array of unsigned int values (LBN:logical block number. For example, w101, you can use `bvi w106` to view the binary content).
@@ -21,12 +21,12 @@ sudo apt install libboost-all-dev
 
 ## The args of program:
 - --trace : which trace you want to run
-- --trace_folder : folder store trace parameter
+- --trace_folder : folder store trace parameter, file name requires to keep the same as the trace file
 - --readbinary : read file in binary mode
--  --mem_size : cache size
--  --method : using which replace algorithm(lirs2, lru, opt, lirs, arc)
--  --batch : select false if there is a specific trace you want to run
--  --trace_list : file that defines the trace list (--batch set to true)
+- --mem_size : cache size
+- --method : using which replace algorithm(lirs2, lru, opt, lirs, arc)
+- --batch : select false if there is a specific trace you want to run
+- --trace_list : file that defines the trace list (--batch set to true)
 
 
 ## Follow the instructions below to run the program:
@@ -38,7 +38,7 @@ sudo apt install libboost-all-dev
 ```
    Running a single trace with string format
 ```
-./replace --method=lirs2 --trace=w111
+./replace --method=lirs2 --trace=Zigzag
 ```
 
    Running a single trace with binary format
@@ -53,5 +53,5 @@ sudo apt install libboost-all-dev
 
    Running multiple methods including "lirs", "lirs2", "lru", "opt", "arc" (must contain list.txt in the folder)
 ```
-./replace --batch=true --trace_list="list.txt"
+./replace --method=all --batch=true --trace_list="list.txt"
 ```

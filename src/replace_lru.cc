@@ -37,9 +37,6 @@ void LRU_Replace::Run () {
     uint32_t last_page_fault_num = 0;
 
     page_struct* temp_LRU_ptr;
-    std::string filename;
-    auto n = mTraceHandle->mFileName.find ("w");
-    filename = mTraceHandle->mFileName.substr (n);
 
     uint32_t step = mTraceHandle->mTraceLength / 20;
     for (uint32_t i = 0; i < mTraceHandle->mTraceLength; i += step) printf (".");

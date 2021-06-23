@@ -25,9 +25,11 @@ using GFLAGS_NAMESPACE::SetUsageMessage;
 
 #include <mutex>
 // manualy set trace_folder/trace
-DEFINE_string (trace, "w111", "which trace you want to run");
+DEFINE_string (trace, "Zigzag", "which trace you want to run");
 DEFINE_string (trace_folder, "../traces/", "where the trace store");
-DEFINE_string (parameter_folder, "../trace_parameter/", "folder store trace parameter");
+DEFINE_string (
+    parameter_folder, "../trace_parameter/",
+    "folder store trace parameter, file name requires to keep the same as the trace file");
 DEFINE_bool (readbinary, false, "read file in binary mode");
 DEFINE_int64 (mem_size, 0, "mem size, run batch if mem_size = 0");
 DEFINE_string (method, "lirs2", "using which replace algorithm(lru, opt, lirs, arc)");
@@ -117,17 +119,25 @@ int main (int argc, char* argv[]) {
             exit (1);
         }
 
-        if (FLAGS_trace.compare ("") != 0) {
-            perror ("Auto mode not allowed assign specific trace.\n");
-            exit (1);
-        }
+        // if (trace_checker.compare ("") != 0) {
+        //     perror ("Auto mode not allowed assign specific trace.\n");
+        //     exit (1);
+        // }
 
         // Auto step 1: read trace list
         std::vector<TraceHandle*> traces;
         std::vector<std::string> trace_list;
         // using file defined traces from trace_list
         // TODO: read list of trace name from FLAGS_trace_list
-        FILE* tf = fopen (FLAGS_trace_list.c_str (), "r");
+        FILE* tf;
+        if ((tf = fopen (FLAGS_trace_list.c_str (), "r")) == NULL) {
+            perror (
+                "\nCould not find trace list file. \nbatch running only support for the traces in "
+                "the list.txt file.\nplease create list.txt file in current folder,\n\and write "
+                "the traces and sep them with Return\n\n");
+            exit (1);
+        }
+
         fseek (tf, 0, SEEK_SET);
         int i = 0;
         char buffer[20] = "";
@@ -136,6 +146,12 @@ int main (int argc, char* argv[]) {
             if (res < 0) break;
             trace_list.push_back (buffer);
         }
+        fclose (tf);
+
+        if (trace_list.empty ()) {
+            perror ("\nNo traces inside the list \n\n");
+            exit (1);
+        }
 
         // Auto step 2: decode parameter(cache size) from list to 2-dim vec
         std::vector<std::vector<uint64_t>> mem_sizes;
@@ -143,9 +159,15 @@ int main (int argc, char* argv[]) {
         for (uint64_t i = 0; i < trace_list.size (); i++) {
             char buffer[20];
             std::string path = FLAGS_parameter_folder.c_str () + trace_list[i];
-            printf ("Read par %s..\n", path.c_str ());
+            printf ("Read par %s\n", path.c_str ());
 
-            FILE* lf = fopen (path.c_str (), "r");
+            FILE* lf;
+
+            if ((lf = fopen (path.c_str (), "r")) == NULL) {
+                perror ("\nCould not find the parameter file \n\n");
+                exit (1);
+            }
+
             fseek (lf, 0, SEEK_SET);
             while (!feof (lf)) {
                 int res = fscanf (lf, "%s", buffer);
@@ -154,9 +176,15 @@ int main (int argc, char* argv[]) {
             }
             mem_sizes.push_back (temp);
             temp.clear ();
+            fclose (lf);
         }
-        printf ("End Read Par..\n");
+        printf ("End Read Par\n");
         fflush (NULL);
+
+        if (mem_sizes.empty ()) {
+            perror ("\nNo parameter inside the file \n\n");
+            exit (1);
+        }
 
         // Auto step 3: run replace algorithm
         for (uint64_t k = 0; k < trace_list.size (); k++) {
@@ -166,7 +194,7 @@ int main (int argc, char* argv[]) {
             std::string filename = FLAGS_trace_folder + trace_list[k];
 
             // Read the traces. May take long time if there are too much trace files.
-            printf ("Read file from %s..\n", filename.c_str ());
+            printf ("Read file from %s\n", filename.c_str ());
             traceHandle->Init (filename, FLAGS_cutline);
 
             printf ("trace = %s, VM_Size = %u\n", trace_list[k].c_str (), traceHandle->mVmSize);
@@ -203,10 +231,16 @@ int main (int argc, char* argv[]) {
         std::shared_ptr<TraceHandle> traceHandle = std::make_shared<TraceHandle> (FLAGS_readbinary);
         std::string filename = FLAGS_trace_folder + FLAGS_trace;
 
-        printf ("Read par %s..\n", filename.c_str ());
+        printf ("Read par %s\n", filename.c_str ());
         printf ("filename: %s\n", filename.c_str ());
 
-        FILE* lf = fopen ((FLAGS_parameter_folder + FLAGS_trace).c_str (), "r");
+        FILE* lf;
+
+        if ((lf = fopen ((FLAGS_parameter_folder + FLAGS_trace).c_str (), "r")) == NULL) {
+            perror ("\nCould not find the parameter file \n\n");
+            exit (1);
+        }
+
         fseek (lf, 0, SEEK_SET);
         char buffer[128];
         std::vector<uint64_t> mem_sizes;
@@ -215,7 +249,7 @@ int main (int argc, char* argv[]) {
             if (res < 0) break;
             mem_sizes.push_back (atoi (buffer));
         }
-
+        fclose (lf);
         fflush (NULL);
         traceHandle->Init (filename, FLAGS_cutline);
         if (FLAGS_mem_size == 0) {

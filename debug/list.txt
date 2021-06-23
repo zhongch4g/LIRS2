@@ -1,2 +1,2 @@
-w110
-w111
+Zigzag
+SCAN

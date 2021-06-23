@@ -64,10 +64,6 @@ LIRS2_Replace::LIRS2_Replace (TraceHandle* th, uint32_t mem_size) {
     cur_ins2_rmax2_len = 0;
     cur_lir_S_len = 0;
 
-    char path1[128];
-    auto n = mTraceHandle->mFileName.find ("w");
-    filename = mTraceHandle->mFileName.substr (n);
-
     /* Global var initial */
     LRU_list_head = NULL;
     LRU_list_tail = NULL;
@@ -435,7 +431,7 @@ void LIRS2_Replace::Run () {
 
         pruneLIRSstack ();
     }
-
+    printf ("\n");
     std::vector<base_info> (mPageTable).swap (mPageTable);
     std::vector<page_struct> (mPageTable1).swap (mPageTable1);
     std::vector<page_struct> (mPageTable2).swap (mPageTable2);
