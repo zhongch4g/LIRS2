@@ -10,6 +10,7 @@
 #include "replace.h"
 #include "replace_arc.h"
 #include "replace_lirs2.h"
+#include "replace_lirs2_optimize.h"
 #include "replace_lirs_base.h"
 #include "replace_lru.h"
 #include "replace_opt.h"
@@ -80,6 +81,13 @@ public:
                 kReportLock.unlock ();
             } else if (mMethod == "lirs2") {
                 LIRS_Replace* replace = new LIRS2_Replace (mTraceHandle.get (), mem_size);
+                replace->Run ();
+                kReportLock.lock ();
+                replace->Report ();
+                kReportLock.unlock ();
+            } else if (mMethod == "lirs2_optimize") {
+                LIRS2_Optimize_Replace* replace =
+                    new LIRS2_Optimize_Replace (mTraceHandle.get (), mem_size);
                 replace->Run ();
                 kReportLock.lock ();
                 replace->Report ();

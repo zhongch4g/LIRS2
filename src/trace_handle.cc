@@ -47,7 +47,6 @@ bool TraceHandle::Init (std::string filename, int32_t cutline) {
             cut++;
         }
         ReadOne (&ref_blk);
-        // printf("ref_blk: %lu \n", ref_blk);
         if (dic.count (ref_blk) == 0) {
             // not meet before
             mRealTrace[page_num] = ref_blk;

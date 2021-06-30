@@ -4,6 +4,8 @@ set(LIRS_SRCS
     "replace_lirs_base.h"
     "replace_lirs2.cc"
     "replace_lirs2.h"
+    "replace_lirs2_optimize.cc"
+    "replace_lirs2_optimize.h"
     "replace_arc.cc"
     "replace_arc.h"
     "replace_lru.cc"
