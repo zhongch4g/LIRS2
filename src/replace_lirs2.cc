@@ -74,6 +74,8 @@ LIRS2_Replace::LIRS2_Replace (TraceHandle* th, uint32_t mem_size) {
     Rmax1 = NULL;
     Rmax2 = NULL;
 
+    Cursor = NULL;
+
     evict_cur_idx = 0;
     evict_max_idx = EVICT_LIST_SIZE;
 
@@ -123,6 +125,8 @@ bool LIRS2_Replace::removeHIRList (page_struct* HIR_block_ptr) {
 page_struct* LIRS2_Replace::findLastLirLru (uint32_t which_instance) {
     assert (which_instance == 1 || which_instance == 2);
 
+    bool pass_HIR = false;
+
     if (which_instance == 1) {
         assert (Rmax1 != NULL);
         while (Rmax1) {
@@ -144,7 +148,9 @@ page_struct* LIRS2_Replace::findLastLirLru (uint32_t which_instance) {
             if (Rmax2->which_instance == 2) cur_ins2_rmax2_len--;
             cur_lir_S_len--;
             Rmax2 = Rmax2->LIRS_prev;
+            if (mPageTable[Rmax2->page_num].isHIR_block && !pass_HIR) pass_HIR = true;
             if (!mPageTable[Rmax2->page_num].isHIR_block && Rmax2->which_instance == 2) {
+                Cursor = Rmax2;
                 return Rmax2;
             }
         }
@@ -222,8 +228,10 @@ void LIRS2_Replace::addHirlistHead (page_struct* new_rsd_HIR_ptr) {
 page_struct* LIRS2_Replace::pruneLIRSstack () {
     page_struct* tmp_ptr;
     while (cur_lir_S_len > MAX_S_LEN) {
-        tmp_ptr = Rmax2;
+        tmp_ptr = Cursor;
         while (!mPageTable[tmp_ptr->page_num].isHIR_block) tmp_ptr = tmp_ptr->LIRS_prev;
+        /* Located at the previous position of the deleted node */
+        Cursor = tmp_ptr->LIRS_prev;
         tmp_ptr->recency1 = S_STACK_OUT;
         tmp_ptr->recency2 = S_STACK_OUT;
         removeLIRSList (tmp_ptr);
@@ -350,6 +358,8 @@ void LIRS2_Replace::Run () {
             if (!Rmax2) {
                 mPageTable2[ref_page].recency1 = S_STACK_OUT;
                 Rmax2 = &mPageTable2[ref_page];
+                /* Initial the Cursor */
+                Cursor = &mPageTable2[ref_page];
             }
             addLruListHead (&mPageTable1[ref_page]);
             if (!Rmax1) Rmax1 = &mPageTable1[ref_page];
@@ -388,6 +398,9 @@ void LIRS2_Replace::Run () {
         }
 
         if (ins2->fake_ins) ins2->fake_ins = false;
+
+        // move the Cursor if accessed
+        if (ins2 == Cursor) Cursor = Cursor->LIRS_prev;
 
         removeLIRSList (ins2);
         addLruListHead (ins2);

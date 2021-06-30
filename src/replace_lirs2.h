@@ -43,6 +43,8 @@ private:
     struct pf_struct* Rmax1; /* LIR block with Rmax1 recency */
     struct pf_struct* Rmax2; /* LIR block with Rmax2 recency */
 
+    struct pf_struct* Cursor; /* Used to maintain the length of S stack */
+
     uint32_t HIR_block_portion_limit, HIR_block_activate_limit;
 
     /* current lir stack length */
